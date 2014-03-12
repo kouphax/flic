@@ -1,7 +1,6 @@
 # flic
 
-Flic is a lightweight [feature toggle library](http://martinfowler.com/bliki/FeatureToggle.html)
-for Clojure based loosely on [rolllout](https://github.com/FetLife/rollout).
+Flic is a lightweight [feature toggle library](http://martinfowler.com/bliki/FeatureToggle.html) for Clojure based loosely on [rolllout](https://github.com/FetLife/rollout).
 
 It offers pluggable support for different storage mediums (in memory, redis, sql etc)
 
@@ -11,14 +10,11 @@ It can be used to control features around
 - groups of users (defined by a predicate)
 - percentage of users
 
-The effects are componded.  So if you deactivate a specific user but they are
-part of a specific group or match against the baseline percentage of activated users
-they will still see the feature.  To this end - this is NOT an access control mechanism
-for restricting access.  Well its not intended to be anyway. YMMV.
+The effects are componded.  So if you deactivate a specific user but they are part of a specific group or match against the baseline percentage of activated users they will still see the feature.  To this end - this is NOT an access control mechanism for restricting access.  Well its not intended to be anyway. YMMV.  
 
 ## Usage
 
-Get it
+Get it into your `project.clj` dependencies
 
 ```clojure
 [flic "0.0.1"]
@@ -30,10 +26,7 @@ Use it.
 (require [flic.core :as flic])
 ```
 
-From here we need to initialise a backing store that will be responsible for
-getting and setting features. The simplest one for now is the in memory store
-that uses an atom to persist the feature state.  We can set this by requiring
-the `flic.store` namespace (you can write your own as well, yes please).
+From here we need to initialise a backing store that will be responsible for getting and setting features. The simplest one for now is the in memory store that uses an atom to persist the feature state.  We can set this by requiring the `flic.store` namespace (you can write your own as well, yes please).
 
 ```clojure
 (ns examples
@@ -43,6 +36,15 @@ the `flic.store` namespace (you can write your own as well, yes please).
 (flic/backing-store! (store/in-memory-store))
 ```
 
+Now we can test what features each user has access to
+
+```clojure
+(if (flic/active? :my-feature user)
+  (do-some-awesome-feature-thing))
+```
+
+A user is a special-ish thing in the context of flic and we talk about that shortly.  But how do we actually __activate__ users?  Read on...
+
 ## Users
 
 You can activate and deactivate specific users.
@@ -51,9 +53,7 @@ You can activate and deactivate specific users.
 (flic/activate-user! :my-feature user)
 ```
 
-This will activate a user for a given feature (identified by `:my-feature` here).
-A user, in the current version is a data strucutre that can produce a value when asked
-for `:id` e.g. { :id 1 :name "James" }.  This is currently not configurable.  Should it be?
+This will activate a user for a given feature (identified by `:my-feature` here).  A user, in the current version is a data strucutre that can produce a value when asked for `:id` e.g. { :id 1 :name "James" }.  This is currently not configurable.  Should it be?
 
 You can deactivate this user in a similar way
 
@@ -63,11 +63,7 @@ You can deactivate this user in a similar way
 
 ## Groups
 
-Groups are clusters of users that you identify using a predicate.  To use these
-effectively you need to define the predicate for groups outside of the actual
-feature store.  If you fail to define a group and then activate that group the group
-test will always be false. So make sure you do, or make sure I find a better way to
-represent this.
+Groups are clusters of users that you identify using a predicate.  To use these effectively you need to define the predicate for groups outside of the actual feature store.  If you fail to define a group and then activate that group the group test will always be false. So make sure you do, or make sure I find a better way to represent this.
 
 So we start by defining a group (require the `flic.groups` namespace).
 
@@ -75,8 +71,7 @@ So we start by defining a group (require the `flic.groups` namespace).
 (groups/define-group :best-people (fn [user] (= (:name user) "James")))
 ```
 
-This defines a group called `:best-people` that identifies all users whose name is `James`
-as a member of the group.
+This defines a group called `:best-people` that identifies all users whose name is `James` as a member of the group.
 
 We can also define a a bunch of groups in one go.
 
@@ -91,8 +86,7 @@ Now we can include these groups in our activation scenarios
 (flic/activate-group! :my-feature :best-people)
 ```
 
-Remember if its not defined it just returns false for now.  I dont like this.
-Help me change it please.
+Remember if its not defined it just returns false for now.  I dont like this.  Help me change it please.
 
 Deactivating a group is not suprising.
 
@@ -105,22 +99,17 @@ If you want you can also check if a person belongs to a group using
 
 ## Percentages
 
-Finally you can activate users via percentage of user base.  This is based on the id of
-the user and assumes its a number.  The percentages are rolling so activating 20% then
-upping it to 25% means the previous 20% will still be included in the activated people
-so it won't be all "You're included", "You're not included" nonsense as you roll out a new
-feature.
+Finally you can activate users via percentage of user base.  This is based on the id of the user and assumes its a number.  The percentages are rolling so activating 20% then upping it to 25% means the previous 20% will still be included in the activated people so it won't be all "You're included", "You're not included" nonsense as you roll out a new feature.
 
 ```clojure
 (flic/activate-percentage! :my-feature 20)
+
 (flic/deactivate-percentage! :my-feature 20)
 ```
 
 ## Blanket (De)Activation
 
-You can activate and deactivate everyone.  Say your feature is golden and good to go or
-perhaps your feature is broken you can use the `activate-all!` and `deactivate-all!` to
-make you happy.
+You can activate and deactivate everyone.  Say your feature is golden and good to go or perhaps your feature is broken you can use the `activate-all!` and `deactivate-all!` to make you happy.
 
 ## License
 
