@@ -1,6 +1,7 @@
 # Introduction
 
 On [clojars](https://clojars.org/flic)
+On [Travis CI](https://travis-ci.org/kouphax/flic)
 
 Flic is a lightweight [feature toggle library](http://martinfowler.com/bliki/FeatureToggle.html) for Clojure based loosely on [rolllout](https://github.com/FetLife/rollout).  Useful for slowly releasing features to users or helping facilitate some A/B testing.
 
