@@ -1,3 +1,15 @@
+# Contents
+
+- [Introduction](#introduction)
+- [Usage](#usage)
+	- [Users](#users)
+	- [Groups](#groups)
+	- [Percentages](#percentages)
+	- [Blanket Activation/Deactivation](#blanket-activationdeactivation)
+- [Stores](#stores)
+	- [In Memory Store](#in-memory-store)
+	- [License](#license)
+    
 # Introduction
 
 On [clojars](https://clojars.org/flic)
