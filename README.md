@@ -1,6 +1,10 @@
 # flic
 
-Flic is a lightweight [feature toggle library](http://martinfowler.com/bliki/FeatureToggle.html) for Clojure based loosely on [rolllout](https://github.com/FetLife/rollout).
+## Introduction
+
+On [clojars](https://clojars.org/flic)
+
+Flic is a lightweight [feature toggle library](http://martinfowler.com/bliki/FeatureToggle.html) for Clojure based loosely on [rolllout](https://github.com/FetLife/rollout).  Useful for slowly releasing features to users or helping facilitate some A/B testing.
 
 It offers pluggable support for different storage mediums (in memory, redis, sql etc)
 
@@ -107,9 +111,31 @@ Finally you can activate users via percentage of user base.  This is based on th
 (flic/deactivate-percentage! :my-feature 20)
 ```
 
-## Blanket (De)Activation
+## Blanket Activation/Deactivation
 
 You can activate and deactivate everyone.  Say your feature is golden and good to go or perhaps your feature is broken you can use the `activate-all!` and `deactivate-all!` to make you happy.
+
+## Stores
+
+A store is an implementation of the `FeatureStore` protocol in the `flic.store` namespace and this is what is used to persist feature configuration longer term.  Implementor of the protocol simply need the ability to `get` a feature and `set!` a feature.  The provided in-memory store is a good example of a simple implementation
+
+```clojure
+(defprotocol FeatureStore
+  "defines the contract used when working with a feature storage thing"
+  (get-feature  [store key]      "retrieves a feature")
+  (set-feature! [store key data] "saves the current feature"))
+
+(deftype InMemoryStore [features]
+  FeatureStore
+  (get-feature  [store key]      (get @features (keyword key) {}))
+  (set-feature! [store key data] (swap! features #(assoc % (keyword key) data))))
+```
+
+There is also a helper provided to construct an in-memory store with or without initial state
+
+```clojure
+(in-memory-store { :my-feature { :groups #{ :all } } })
+```
 
 ## License
 
