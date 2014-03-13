@@ -1,15 +1,3 @@
-# Contents
-
-- [Introduction](#introduction)
-- [Usage](#usage)
-	- [Users](#users)
-	- [Groups](#groups)
-	- [Percentages](#percentages)
-	- [Blanket Activation/Deactivation](#blanket-activationdeactivation)
-- [Stores](#stores)
-	- [In Memory Store](#in-memory-store)
-	- [License](#license)
-    
 # Introduction
 
 On [clojars](https://clojars.org/flic)
@@ -26,6 +14,18 @@ It can be used to control features around
 
 The effects are componded.  So if you deactivate a specific user but they are part of a specific group or match against the baseline percentage of activated users they will still see the feature.  To this end - this is NOT an access control mechanism for restricting access.  Well its not intended to be anyway. YMMV.  
 
+# Contents
+
+- [Introduction](#introduction)
+- [Usage](#usage)
+	- [Users](#users)
+	- [Groups](#groups)
+	- [Percentages](#percentages)
+	- [Blanket Activation/Deactivation](#blanket-activationdeactivation)
+- [Stores](#stores)
+	- [In Memory Store](#in-memory-store)
+- [License](#license)
+    
 # Usage
 
 Get it into your `project.clj` dependencies
@@ -149,7 +149,7 @@ There is also a helper provided to construct an in-memory store with or without 
 (in-memory-store { :my-feature { :groups #{ :all } } })
 ```
 
-## License
+# License
 
 Copyright © 2014 James Hughes
 
