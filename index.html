@@ -1,37 +1,42 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Flic by kouphax</title>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Flic : Simple feature toggles" />
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Flic</title>
   </head>
+
   <body>
-    <div class="wrapper">
-      <header>
-        <h1>Flic</h1>
-        <p>simple feature toggles</p>
 
-        <p class="view"><a href="https://github.com/kouphax/flic">View the Project on GitHub <small>kouphax/flic</small></a></p>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/kouphax/flic">View on GitHub</a>
 
+          <h1 id="project_title">Flic</h1>
+          <h2 id="project_tagline">Simple feature toggles</h2>
 
-        <ul>
-          <li><a href="https://github.com/kouphax/flic/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/kouphax/flic/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/kouphax/flic">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/kouphax/flic/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/kouphax/flic/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
         <h1>
-<a name="flic" class="anchor" href="#flic"><span class="octicon octicon-link"></span></a>flic</h1>
+<a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h1>
 
-<p>Flic is a lightweight <a href="http://martinfowler.com/bliki/FeatureToggle.html">feature toggle library</a> for Clojure based loosely on <a href="https://github.com/FetLife/rollout">rolllout</a>.</p>
+<p>On <a href="https://clojars.org/flic">clojars</a></p>
+
+<p>Flic is a lightweight <a href="http://martinfowler.com/bliki/FeatureToggle.html">feature toggle library</a> for Clojure based loosely on <a href="https://github.com/FetLife/rollout">rolllout</a>.  Useful for slowly releasing features to users or helping facilitate some A/B testing.</p>
 
 <p>It offers pluggable support for different storage mediums (in memory, redis, sql etc)</p>
 
@@ -43,8 +48,31 @@
 <li>percentage of users</li>
 </ul><p>The effects are componded.  So if you deactivate a specific user but they are part of a specific group or match against the baseline percentage of activated users they will still see the feature.  To this end - this is NOT an access control mechanism for restricting access.  Well its not intended to be anyway. YMMV.  </p>
 
-<h2>
-<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+<h1>
+<a name="contents" class="anchor" href="#contents"><span class="octicon octicon-link"></span></a>Contents</h1>
+
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li>
+<a href="#usage">Usage</a>
+
+<ul>
+<li><a href="#users">Users</a></li>
+<li><a href="#groups">Groups</a></li>
+<li><a href="#percentages">Percentages</a></li>
+<li><a href="#blanket-activationdeactivation">Blanket Activation/Deactivation</a></li>
+</ul>
+</li>
+<li>
+<a href="#stores">Stores</a>
+
+<ul>
+<li><a href="#in-memory-store">In Memory Store</a></li>
+</ul>
+</li>
+<li><a href="#license">License</a></li>
+</ul><h1>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h1>
 
 <p>Get it into your <code>project.clj</code> dependencies</p>
 
@@ -132,24 +160,52 @@
 </pre></div>
 
 <h2>
-<a name="blanket-deactivation" class="anchor" href="#blanket-deactivation"><span class="octicon octicon-link"></span></a>Blanket (De)Activation</h2>
+<a name="blanket-activationdeactivation" class="anchor" href="#blanket-activationdeactivation"><span class="octicon octicon-link"></span></a>Blanket Activation/Deactivation</h2>
 
 <p>You can activate and deactivate everyone.  Say your feature is golden and good to go or perhaps your feature is broken you can use the <code>activate-all!</code> and <code>deactivate-all!</code> to make you happy.</p>
 
+<h1>
+<a name="stores" class="anchor" href="#stores"><span class="octicon octicon-link"></span></a>Stores</h1>
+
+<p>A store is an implementation of the <code>FeatureStore</code> protocol in the <code>flic.store</code> namespace and this is what is used to persist feature configuration longer term.  Implementor of the protocol simply need the ability to <code>get</code> a feature and <code>set!</code> a feature.  The provided in-memory store is a good example of a simple implementation</p>
+
 <h2>
-<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+<a name="in-memory-store" class="anchor" href="#in-memory-store"><span class="octicon octicon-link"></span></a>In Memory Store</h2>
+
+<div class="highlight highlight-clojure"><pre><span class="p">(</span><span class="kd">defprotocol </span><span class="nv">FeatureStore</span>
+  <span class="s">"defines the contract used when working with a feature storage thing"</span>
+  <span class="p">(</span><span class="nf">get-feature</span>  <span class="p">[</span><span class="nv">store</span> <span class="nv">key</span><span class="p">]</span>      <span class="s">"retrieves a feature"</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">set-feature!</span> <span class="p">[</span><span class="nv">store</span> <span class="nb">key </span><span class="nv">data</span><span class="p">]</span> <span class="s">"saves the current feature"</span><span class="p">))</span>
+
+<span class="p">(</span><span class="kd">deftype </span><span class="nv">InMemoryStore</span> <span class="p">[</span><span class="nv">features</span><span class="p">]</span>
+  <span class="nv">FeatureStore</span>
+  <span class="p">(</span><span class="nf">get-feature</span>  <span class="p">[</span><span class="nv">store</span> <span class="nv">key</span><span class="p">]</span>      <span class="p">(</span><span class="nb">get </span><span class="o">@</span><span class="nv">features</span> <span class="p">(</span><span class="nb">keyword </span><span class="nv">key</span><span class="p">)</span> <span class="p">{}))</span>
+  <span class="p">(</span><span class="nf">set-feature!</span> <span class="p">[</span><span class="nv">store</span> <span class="nb">key </span><span class="nv">data</span><span class="p">]</span> <span class="p">(</span><span class="nf">swap!</span> <span class="nv">features</span> <span class="o">#</span><span class="p">(</span><span class="nb">assoc </span><span class="nv">%</span> <span class="p">(</span><span class="nb">keyword </span><span class="nv">key</span><span class="p">)</span> <span class="nv">data</span><span class="p">))))</span>
+</pre></div>
+
+<p>There is also a helper provided to construct an in-memory store with or without initial state</p>
+
+<div class="highlight highlight-clojure"><pre><span class="p">(</span><span class="nf">in-memory-store</span> <span class="p">{</span> <span class="ss">:my-feature</span> <span class="p">{</span> <span class="ss">:groups</span> <span class="o">#</span><span class="p">{</span> <span class="ss">:all</span> <span class="p">}</span> <span class="p">}</span> <span class="p">})</span>
+</pre></div>
+
+<h1>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h1>
 
 <p>Copyright © 2014 James Hughes</p>
 
 <p>Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.</p>
       </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/kouphax">kouphax</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Flic maintained by <a href="https://github.com/kouphax">kouphax</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
-    <script src="javascripts/scale.fix.js"></script>
+
               <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
@@ -160,6 +216,7 @@ your option) any later version.</p>
             pageTracker._trackPageview();
             } catch(err) {}
           </script>
+
 
   </body>
 </html>
