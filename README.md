@@ -1,6 +1,4 @@
-# flic
-
-## Introduction
+# Introduction
 
 On [clojars](https://clojars.org/flic)
 
@@ -16,7 +14,7 @@ It can be used to control features around
 
 The effects are componded.  So if you deactivate a specific user but they are part of a specific group or match against the baseline percentage of activated users they will still see the feature.  To this end - this is NOT an access control mechanism for restricting access.  Well its not intended to be anyway. YMMV.  
 
-## Usage
+# Usage
 
 Get it into your `project.clj` dependencies
 
@@ -115,9 +113,11 @@ Finally you can activate users via percentage of user base.  This is based on th
 
 You can activate and deactivate everyone.  Say your feature is golden and good to go or perhaps your feature is broken you can use the `activate-all!` and `deactivate-all!` to make you happy.
 
-## Stores
+# Stores
 
 A store is an implementation of the `FeatureStore` protocol in the `flic.store` namespace and this is what is used to persist feature configuration longer term.  Implementor of the protocol simply need the ability to `get` a feature and `set!` a feature.  The provided in-memory store is a good example of a simple implementation
+
+## In Memory Store
 
 ```clojure
 (defprotocol FeatureStore
